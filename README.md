@@ -53,4 +53,4 @@ You can also submit bug reports and suggestions via e-mail or <https://github.co
 
 This R package is licensed under the GNU General Public License v3.0.
 
-See [here](https://github.com/lorenzbr/techStandards/blob/main/LICENSE.md) for further information.
+See [here](https://github.com/lorenzbr/techStandards/blob/main/LICENSE) for further information.
