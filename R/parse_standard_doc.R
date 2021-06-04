@@ -1,16 +1,18 @@
 #' Standard document parser
 #' 
-#' Parses a standard document and gets the full text for each section. The parsed table of contents is stored as csv.
+#' Parse a standard document and get the full text for each section. The parsed table of contents is stored as a csv file.
 #' 
-#' @usage standard_doc_parser(file, path, sso = NULL, doc.type = "pdf", print = TRUE)
+#' @usage parse_standard_doc(file, path, sso = NULL, doc.type = "pdf", 
+#'        overwrite = FALSE, print = TRUE)
 #' @param file A string containing the file name of the standard document.
 #' @param path A string containing the path of the standard document.
 #' @param sso A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).
 #' @param doc.type A string containing the document type. Should be \emph{pdf}.
+#' @param overwrite A logical indicating whether to overwrite existing data.
 #' @param print A logical. If \code{TRUE} messages are printed.
 #' 
 #' @export
-standard_doc_parser <- function(file, path, sso = NULL, doc.type = "pdf", print = TRUE) {
+parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwrite = FALSE, print = TRUE) {
 
   #### standard document parser
   
@@ -48,7 +50,7 @@ standard_doc_parser <- function(file, path, sso = NULL, doc.type = "pdf", print 
     parsed.documents <- data.table::fread(file.path(dirname(path), "parsed_documents.txt"), sep = ";")
     document.parsed <- sum(grepl(standard, parsed.documents$Parsed_documents, fixed = TRUE)) > 0
 
-    if (document.parsed == FALSE) {
+    if (document.parsed == FALSE || (document.parsed == TRUE && overwrite == TRUE) ) {
     
       ## read standard document into a data.frame
       if (doc.type == "pdf") {
