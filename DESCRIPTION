@@ -1,0 +1,25 @@
+Package: techStandards
+Type: Package
+Title: Repository of Functions Related to Technical Standards
+Version: 0.1.0
+Authors@R: 
+    person(given = "Lorenz",
+           family = "Brachtendorf",
+           role = c("aut", "cre"),
+           email = "lorenz.brachtendorf@gmx.de",
+           comment = c(ORCID = "0000-0001-7066-0838"))
+Description: Repository of functions related to technical standards.
+Imports:
+    callr,
+    data.table,
+    Hmisc,
+    pdftools,
+    PKPDmisc,
+    stringdist,
+    stringr,
+    tesseract,
+    utils
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
