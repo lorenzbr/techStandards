@@ -40,11 +40,10 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   contents <- contents[contents$text_no_spaces != "0age", ]
   contents <- contents[contents$text_no_spaces != "contents", ]
   
-  ## sometimes there are page numbers with roman letters in the table of contents
+  ## sometimes there are page numbers with roman letters in the table of contents. remove those
   pagenumbers.which.need.to.be.removed <- seq(1 : 100)
   pagenumbers.which.need.to.be.removed <- tolower(as.character(utils::as.roman(pagenumbers.which.need.to.be.removed)))
-  for (pagenumber in pagenumbers.which.need.to.be.removed) { contents <- contents[contents$text_no_spaces != pagenumber, ] }
-  
+  for (pagenumber in pagenumbers.which.need.to.be.removed) contents <- contents[contents$text_no_spaces != pagenumber, ]
   contents <- contents[!(grepl("\\.{4}[xvi]{1,4}$", contents$text_no_spaces)), ]
   
   if (sso == "ITU-T") {
@@ -63,10 +62,10 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   contents$text <- gsub("^\\s+", "", contents$text)
   
   
-  ## identify section_title which is simply substring until many dots appear (e.g. ten dots in a row split the title from page number)
+  ## identify section_title which is simply the substring before the many dots appear (e.g. ten dots in a row split the title from page number)
   ## section title is everything before many dots OR before the page number at the end
-  ## arbitrary number of dots, but at least more than one dot, followed by optional spaces, 
-  ## followed by number with something between 1 to 4 figures at the end of the string
+  ## arbitrary number of dots, but at least more than one dot followed by optional spaces, 
+  ## followed by number with something between 1 to 4 figures (largest page numebr is in the thousands) at the end of the string
   contents$section_title <- sapply(contents$text, function(x) { strsplit(x, split = "\\s*?\\.+\\s*?[0-9]{1,4}$")[[1]][1] })
   
   ## remove all spaces and dots at the end of section titles until there are non left WHY DO THIS LIKE THAT?
@@ -89,7 +88,7 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   #### the code for this follows
   
   ## identify rows in the table of contents which do not have a page number at the end
-  ## i.e. morelines is True if there is basically no page number at the end
+  ## i.e. morelines is TRUE if there is basically no page number at the end
   contents$morelines <- !(grepl("[.)0-9a-z] ?\\.\\.+ ?[0-9]{1,4}$|tables\\.\\.+", contents$text_no_spaces))
   
   ## need to correct some morelines
@@ -116,18 +115,21 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   contents$section_no[contents$section_no == ""] <- NA
   
   if ( all(is.na(contents$section_no)) ) {
-    df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, msg = "Section numbers not identified",
-                         error_orig = "")
+    
+    df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, 
+                         msg = "Section numbers not identified", error_orig = "")
+    
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)
+    
   }
   
   ## identify the section titles which go over 2, 3, 4, 5, 6 or 7 lines and store the text into the first line
   ## the choice of considering seven lines is arbitrary chosen (there may be even longer section titles)
   for ( i in which(contents$morelines) ) {
     
-    for ( j in 6:1) { 
+    for ( j in 6:1) {
       
-      if ( all(is.na(contents$section_no[(i + 1):(i + j)])) & i + j <= nrow(contents) ) contents <- concatenate_contents_rows(contents, i, j)
+      if ( all(is.na(contents$section_no[(i + 1):(i + j)])) && i + j <= nrow(contents) ) contents <- concatenate_contents_rows(contents, i, j)
       
     }
     
@@ -143,25 +145,25 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   ## all lines which are the next lines of the first section line are removed
   ## if condition: do this only if there are several lines at all, otherwise would get an error
   if (length(logicsecondlines) > 0) {
+    
     contents$several_line_title <- logicsecondlines
     ## change last row to FALSE
     contents$several_line_title[nrow(contents)] <- FALSE
     contents <- contents[contents$several_line_title == FALSE, ]
+    
   }
   
-  ## identify the actual title which is the second part in the string split 
+  ## identify the actual title which is the second part in the string split
+  title.sectionno.splitter <- "^[0-9a-z][0-9a-z]?[ \\.]([0-9a-z]{1,2})? ?\\.?([0-9]{1,2})? ?\\.?([0-9]{1,2})? ?\\.?([0-9]{1,2})? ?|annex ?[a-z]|^[0-9]{1,2}\\)|^annex ?[a-z]\\)"
   contents$section_title_text <- sapply(contents$section_title, 
-                                         function(x){ strsplit(x, split = "^[0-9a-z][0-9a-z]?[ \\.]([0-9a-z]{1,2})? ?\\.?([0-9]{1,2})? ?\\.?([0-9]{1,2})? ?\\.?([0-9]{1,2})? ?|annex ?[a-z]|^[0-9]{1,2}\\)|^annex ?[a-z]\\)")[[1]][2]})
+                                         function(x){ strsplit(x, split = title.sectionno.splitter)[[1]][2]})
   
   contents$section_title_text <- gsub("^\\s+", "", contents$section_title_text)
   
   ## identify page of section at the end of the string; always the last numbers in the string
   contents$page_of_section <- as.numeric(stringr::str_extract(contents$text_no_spaces, "[0-9]{1,4}$"))
   
-  ## some section are void. indicate this (not required but interesting)
-  contents$void_ident <- grepl(" void |^void ", contents$text)
-  
-  ## remove figures and tables because only interested in the actual text
+  ## remove figures and tables because only actual text is relevant
   contents <- contents[!(grepl("^fig", contents$text_no_spaces)), ]
   contents <- contents[!(grepl("^table", contents$text_no_spaces)), ]
   

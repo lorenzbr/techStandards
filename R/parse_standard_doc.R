@@ -23,7 +23,7 @@ parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwri
   path.ch.txt <- paste0(gsub("/$", "", path), "_ch_txt/")
   path.toc <- paste0(gsub("/$", "", path), "_toc/")
   
-  ## create windows path (because without it, R aborts after running for quite a while)
+  ## create windows path (because without it, R aborts after running for quite a while when parse_standard_docs is used)
   file <- gsub("/", "\\\\", file)
   
   standard <- basename(file)
