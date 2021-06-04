@@ -4,7 +4,7 @@
 #' 
 #' @usage parse_standard_docs(path, sso = NULL, doc.type = "pdf", 
 #'                     overwrite = FALSE, print = TRUE)
-#' @param path A string containing the path of the standard document.
+#' @param path A string containing the path of the parsed standard document.
 #' @param sso A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).
 #' @param doc.type A string containing the document type. Should be \emph{pdf}.
 #' @param overwrite A logical indicating whether to overwrite existing data.

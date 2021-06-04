@@ -3,9 +3,9 @@
 #' Parse a standard document and get the full text for each section. The parsed table of contents is stored as a csv file.
 #' 
 #' @usage parse_standard_doc(file, path, sso = NULL, doc.type = "pdf", 
-#'                            overwrite = FALSE, print = TRUE)
+#'                    overwrite = FALSE, print = TRUE)
 #' @param file A string containing the file name of the standard document.
-#' @param path A string containing the path of the standard document.
+#' @param path A string containing the path of the parsed standard document.
 #' @param sso A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).
 #' @param doc.type A string containing the document type. Should be \emph{pdf}.
 #' @param overwrite A logical indicating whether to overwrite existing data.

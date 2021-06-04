@@ -5,7 +5,7 @@
 \title{Standard document parser}
 \usage{
 parse_standard_doc(file, path, sso = NULL, doc.type = "pdf", 
-                           overwrite = FALSE, print = TRUE)
+                   overwrite = FALSE, print = TRUE)
 }
 \arguments{
 \item{file}{A string containing the file name of the standard document.}
