@@ -8,7 +8,7 @@ parse_standard_docs(path, sso = NULL, doc.type = "pdf",
                     overwrite = FALSE, print = TRUE)
 }
 \arguments{
-\item{path}{A string containing the path of the standard document.}
+\item{path}{A string containing the path of the parsed standard document.}
 
 \item{sso}{A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).}
 
