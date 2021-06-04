@@ -14,7 +14,7 @@ init_standard_doc_parser <- function (path, create.new.files = FALSE) {
   if (create.new.files) {
     
     ## empty log.txt
-    err.msg.colnam <- c("timestamp", "a_filename", "nb.pages", "nb.pages.with.content", "error_message", "original_error_message")
+    err.msg.colnam <- c("timestamp", "a_filename", "nb_pages", "nb_pages_with_content", "error_message", "original_error_message")
     df <- data.frame(matrix(ncol = 6, nrow = 0))
     names(df) <- err.msg.colnam
     utils::write.table(df, file.path(dirname(path), "log.txt"), append = FALSE, row.names = FALSE, col.names = TRUE, sep = ";")

@@ -137,13 +137,11 @@ parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwri
         
         if (nrow(contents) > 0) {
           
-          contents$section_no2 <- gsub("annex", "", contents$section_no)
+          contents$section_no <- gsub("annex", "", contents$section_no)
           
-          contents$chapter_no <- stringr::str_extract(contents$section_no2, "^[0-9a-z]{1,2}\\.?|^annex[a-z]|^[0-9]")
+          contents$chapter_no <- stringr::str_extract(contents$section_no, "^[0-9a-z]{1,2}\\.?|^annex[a-z]|^[0-9]")
           contents$chapter_no <- gsub("\\.", "", contents$chapter_no)
           contents$chapter_no <- gsub(" ", "", contents$chapter_no)
-          
-          contents <- contents[, names(contents) != "section_no2"]
           
           ## store parsed table of contents as csv
           utils::write.csv2(contents, paste0(path.toc, doc.name, "_toc.csv"), row.names = FALSE)
@@ -159,8 +157,8 @@ parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwri
             
           } else if (nrow(contents) == 0) {
             
-            df.err <- data.frame(timestamp = Sys.time(), file = standard, nb.pages, nb.pages.with.content, msg = "contents is empty", 
-                                 error_orig = "")
+            df.err <- data.frame(timestamp = Sys.time(), file = standard, nb_pages = nb.pages, nb_pages_with_content = nb.pages.with.content, 
+                                 msg = "contents is empty", error_orig = "")
             utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)      
             
           }
@@ -192,7 +190,7 @@ parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwri
     
     if ( !exists("nb.pages") ) nb.pages <- NA
     
-    df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content = nb.pages.with.content,
+    df.err <- data.frame(timestamp = Sys.time(), standard, nb_pages = nb.pages, nb_pages_with_content = nb.pages.with.content,
                          msg = "Standard document not used", error_orig = gsub("\n", "", e))
     
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE) 

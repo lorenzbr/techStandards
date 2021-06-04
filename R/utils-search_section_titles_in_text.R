@@ -96,7 +96,7 @@ search_section_titles_in_text <- function(contents, pdf, standard, nb.pages, nb.
   
   ## if the share of no section titles identified is larger than 30%, produce warning message
   if (share.of.not.identified > 0.3) {
-    df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, 
+    df.err <- data.frame(timestamp = Sys.time(), standard, nb_pages = nb.pages, nb_pages_with_content = nb.pages.with.content, 
                          msg = paste0(sprintf(share.of.not.identified, fmt = '%#.2f'), " of section titles not identified in the text"),
                          error_orig = "")
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)

@@ -116,7 +116,7 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   
   if ( all(is.na(contents$section_no)) ) {
     
-    df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, 
+    df.err <- data.frame(timestamp = Sys.time(), standard, nb_pages = nb.pages, nb_pages_with_content = nb.pages.with.content, 
                          msg = "Section numbers not identified", error_orig = "")
     
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)

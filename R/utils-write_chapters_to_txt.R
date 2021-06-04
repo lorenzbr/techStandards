@@ -7,7 +7,7 @@ write_chapters_to_txt <- function(contents, standard, doc.name, nb.pages, nb.pag
   
   ## if unique.chapters contains NA, give error message
   if (sum(is.na(unique.chapters)) > 0) {
-    df.err <- data.frame(timestamp = Sys.time(), file = standard, nb.pages, nb.pages.with.content, 
+    df.err <- data.frame(timestamp = Sys.time(), file = standard, nb_pages = nb.pages, nb_pages_with_content = nb.pages.with.content, 
                          msg = "NA Error at unique.chapters", error_orig = "")
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)
   }

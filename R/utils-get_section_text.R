@@ -36,7 +36,7 @@ get_section_text <- function(contents, pdf, standard, nb.pages, nb.pages.with.co
   } else if (nrow(contents) == 0) {
     
     ## if contents is empty get error message
-    df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, 
+    df.err <- data.frame(timestamp = Sys.time(), standard, nb_pages = nb.pages, nb_pages_with_content = nb.pages.with.content, 
                          msg = "contents is empty due to no identified title in text", error_orig = "")
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)
     
