@@ -46,11 +46,11 @@ parse_standard_docs(path = "inst/extdata/etsi_examples", sso = "ETSI", overwrite
 
 Please contact <lorenz.brachtendorf@gmx.de> if you want to contribute to this project.
 
-You can also submit bug reports and suggestions via e-mail or <https://github.com/lorenzbr/cryptowatchR/issues> 
+You can also submit bug reports and suggestions via e-mail or <https://github.com/lorenzbr/techStandards/issues> 
 
 
 ## License
 
 This R package is licensed under the GNU General Public License v3.0.
 
-See [here](https://github.com/lorenzbr/cryptowatchR/blob/main/LICENSE.md) for further information.
+See [here](https://github.com/lorenzbr/techStandards/blob/main/LICENSE.md) for further information.
