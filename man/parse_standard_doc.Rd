@@ -5,7 +5,7 @@
 \title{Standard document parser}
 \usage{
 parse_standard_doc(file, path, sso = NULL, doc.type = "pdf", 
-       overwrite = FALSE, print = TRUE)
+                           overwrite = FALSE, print = TRUE)
 }
 \arguments{
 \item{file}{A string containing the file name of the standard document.}
@@ -22,4 +22,7 @@ parse_standard_doc(file, path, sso = NULL, doc.type = "pdf",
 }
 \description{
 Parse a standard document and get the full text for each section. The parsed table of contents is stored as a csv file.
+}
+\seealso{
+\code{\link{parse_standard_docs}}
 }
