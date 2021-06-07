@@ -2,19 +2,20 @@
 #' 
 #' Parse a standard document and get the full text for each section. The parsed table of contents is stored as a csv file.
 #' 
-#' @usage parse_standard_doc(file, path, sso = NULL, doc.type = "pdf", 
-#'                    overwrite = FALSE, print = TRUE)
+#' @usage parse_standard_doc(file, path, sso = "", doc.type = "pdf", 
+#'                    overwrite = FALSE, encoding = "UTF-8", print = TRUE)
 #' @param file A string containing the file name of the standard document.
 #' @param path A string containing the path of the parsed standard document.
 #' @param sso A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).
 #' @param doc.type A string containing the document type. Should be \emph{pdf}.
 #' @param overwrite A logical indicating whether to overwrite existing data.
+#' @param encoding Encoding of the input document. Default is \emph{UTF-8}. The encoding is converted to \emph{UTF-8}.
 #' @param print A logical. If \code{TRUE} messages are printed.
 #' 
 #' @seealso \code{\link{parse_standard_docs}}
 #' 
 #' @export
-parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwrite = FALSE, print = TRUE) {
+parse_standard_doc <- function(file, path, sso = "", doc.type = "pdf", overwrite = FALSE, encoding = "UTF-8", print = TRUE) {
 
   ## initialize parsing (creates files and folders)
   if ( !file.exists(file.path(dirname(path), "log.txt")) ) init_standard_doc_parser(path, create.new.files = TRUE)
@@ -41,6 +42,7 @@ parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwri
     text.title.splitter <- "^[0-9][0-9a-z]?[ \\.]([0-9]{1,2})? ?\\.?([0-9a-z]{1,2})? ?[_\\.]?([0-9a-z]{1,3})? ?-?[a-z]?[_\\.]?([0-9a-z]{1,3})? ?\\.?([0-9a-z]{1,2})? ?\\.?([0-9a-z]{1,2})? |^annex [a-z]|^[a-z][ \\.]([0-9]{1,2})? ?\\.?([0-9]{1,2})? ?\\.?([0-9]{1,2})? ?\\.?([0-9]{1,2})? ?\\.?([0-9]{1,2})? ?"
   }
   
+  
   tryCatch({
     
     ## get document name (without file type)
@@ -50,7 +52,7 @@ parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwri
     parsed.documents <- data.table::fread(file.path(dirname(path), "parsed_documents.txt"), sep = ";")
     document.parsed <- sum(grepl(standard, parsed.documents$Parsed_documents, fixed = TRUE)) > 0
 
-    if (document.parsed == FALSE || (document.parsed == TRUE && overwrite == TRUE) ) {
+    if ( document.parsed == FALSE || (document.parsed == TRUE && overwrite == TRUE) ) {
     
       ## read standard document into a data.frame
       if (doc.type == "pdf") {
@@ -79,32 +81,28 @@ parse_standard_doc <- function(file, path, sso = NULL, doc.type = "pdf", overwri
         
       }
       
+      ## convert encoding to UTF-8
+      pdf$text <- iconv(pdf$text, from = encoding, to = "UTF-8", sub = "")
       
-      ## some manual cleaning
+      ## some cleaning
       pdf$text <- gsub("\\;", "\\. ", pdf$text)
       pdf$text <- gsub('\\"', "\\'", pdf$text)
       pdf <- pdf[!(pdf$text == sso), ]
-      if (sso == "IEEE") {pdf <- pdf[!(grepl(paste0(sso, "\\.? All rights reserved\\.?"), pdf$text)), ]}
-      
-      
+      pdf <- pdf[!(grepl("all rights reserved", pdf$text)), ]
+
       ## create id for each line
       pdf$line_id <- 1:nrow(pdf)
       
       ## text to lower case
       pdf$text <- tolower(pdf$text)
       
-      ## manual cleaning
-      pdf <- pdf[!(grepl("all rights reserved", pdf$text)), ]
-      
-      
-      pdf$text <- iconv(pdf$text, "UTF-8", "UTF-8", "")
-      
+      ## text without spaces (used to match strings)
       pdf$text_no_spaces <- gsub(" ", "", pdf$text)
-      
       
       ## some manual cleaning
       pdf$text_no_spaces[pdf$text_no_spaces == "contentspage"] <- "contents"
       pdf$text_no_spaces <- gsub("\003|\002|\001|\004", "", pdf$text_no_spaces)
+      
       
       
       

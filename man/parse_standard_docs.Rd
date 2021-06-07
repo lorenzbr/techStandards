@@ -5,7 +5,7 @@
 \title{Parse standard documents}
 \usage{
 parse_standard_docs(path, sso = NULL, doc.type = "pdf", 
-                    overwrite = FALSE, print = TRUE)
+                    overwrite = FALSE, encoding = "UTF-8", print = TRUE)
 }
 \arguments{
 \item{path}{A string containing the path of the parsed standard document.}
@@ -15,6 +15,8 @@ parse_standard_docs(path, sso = NULL, doc.type = "pdf",
 \item{doc.type}{A string containing the document type. Should be \emph{pdf}.}
 
 \item{overwrite}{A logical indicating whether to overwrite existing data.}
+
+\item{encoding}{Encoding of the input document. Default is \emph{UTF-8}. The encoding is converted to \emph{UTF-8}.}
 
 \item{print}{A logical. If \code{TRUE} messages are printed.}
 }
