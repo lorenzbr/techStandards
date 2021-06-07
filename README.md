@@ -6,8 +6,12 @@
 stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable-1)
 <!-- badges: end -->
 
-Repository of functions focusing on technical standards
+Download and parse technical standard documents
 
+
+## Introduction
+
+This repository contains functions to download standard documents from the [ETSI website](https://www.etsi.org/standards) and parse standard documents. For related functions (e.g., accessing ITU-T standard documents), see [here](https://github.com/lorenzbr/pystandards).
 
 ## Installation
 
@@ -22,7 +26,7 @@ devtools::install_github("lorenzbr/techStandards")
 ## Example
 
 
-```
+```r
 library(techStandards)
 
 ## Examples
@@ -31,7 +35,7 @@ library(techStandards)
 data("etsi_standards_meta")
 download_etsi_standards(etsi_standards_meta)
 
-# Parse single standard document
+# Parse a single standard document
 files <- list.files(system.file("extdata/etsi_examples", package = "techStandards"), 
                     pattern = "pdf", full.names = TRUE)
 file <- files[1]
