@@ -46,7 +46,7 @@ find_text_line_id <- function(contents, pdf, startpage, endpage, remaining.rows 
         
       } else if (several.lines >= 2 && preceding) {
         
-        ## create new column which comprise the focal text plus the preceding ones
+        ## create new column which comprises the focal text plus the preceding ones
         pdfpage$text_nospace_severallines_preceding <- ""
         
         for (j in several.lines:nrow(pdfpage) ) {
@@ -76,7 +76,7 @@ find_text_line_id <- function(contents, pdf, startpage, endpage, remaining.rows 
         
       } else if (search.type == "stringsim") {
         
-        ## use string similarity stringsim (restricted Damerau-Levenshtein distance). The default value 0.85 is an arbitrary value
+        ## use string similarity stringsim (restricted Damerau-Levenshtein distance). Default value 0.85 is an arbitrarily high value
         text.no.spaces.substr <- substr(pdfpage$text_no_spaces, 1, nchar(contents$section_title_nospace[i]))
         match.section.title <- stringdist::stringsim(contents$section_title_nospace[i], text.no.spaces.substr) > stringsim.threshold
         
@@ -88,12 +88,12 @@ find_text_line_id <- function(contents, pdf, startpage, endpage, remaining.rows 
     
   }
   
-  ## store those identified text line ids in the final complete column
+  ## store identified text line_ids in the final column
   line.id.compl.is.empty <- contents$text_line_id == ""
   line.id.is.unique <- !grepl(";", contents$text_line_id_temp)
   contents$text_line_id[line.id.compl.is.empty & line.id.is.unique] <- contents$text_line_id_temp[line.id.compl.is.empty & line.id.is.unique]
   
-  ## keep those rows in contents which do not yet have an identified full text
+  ## keep rows of table of contents which do not yet have an identified full text
   remaining.rows <- which(contents$text_line_id == "")
   
   contents <- contents[, names(contents) != "text_line_id_temp"]

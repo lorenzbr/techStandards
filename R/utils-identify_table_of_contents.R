@@ -2,7 +2,7 @@
 #' @noRd
 identify_table_of_contents <- function(pdf, standard, nb.pages, nb.pages.with.content, path) {
   
-  ## this gives the maximum element id: in all rows lower than this, try to find the start of the table of contents
+  ## this gives the maximum element id: in all rows lower than this try to find the start of the table of contents
   ## because one would expect the table of contents to start at the beginning of a page
   max.element.id <- 10
   
@@ -40,7 +40,7 @@ identify_table_of_contents <- function(pdf, standard, nb.pages, nb.pages.with.co
     if ( length(startline) == 0 ) rm(startline)
     if ( exists("startline") ) { if (startline == "Inf") { rm(startline) } }
     
-  } ## end of if condition
+  }
   
   
   ## identify endline if any row with dots exist where a number with 1 to 4 figures follows at the end
@@ -52,19 +52,19 @@ identify_table_of_contents <- function(pdf, standard, nb.pages, nb.pages.with.co
     ## remove all endlines which are smaller than startline
     if(exists("startline")) endline <- endline[endline > startline]
     
-    ## vector to data frame
+    ## vector to data.frame
     df.endline <- data.frame(endline)
     
-    ## if startline exists but endline does not exist, give an error message
+    ## if startline exists but endline does not exist produce an error message
     if (nrow(df.endline) == 0) {
       df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, msg = "df.endline is empty.", error_orig = "")
       utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)
-    } ## end of error message
+    }
     
     ## compute difference to the previous line
     df.endline$diff <- c(diff(df.endline$endline), 1)
     
-    ## remove all where for the first time the difference to the previous line is larger than 30 lines
+    ## remove all entries where for the first time the difference to the previous line is larger than 30 lines
     if (any(df.endline$diff > 30)) {
       df.endline <- df.endline[df.endline$endline <= min(df.endline$endline[df.endline$diff > 30]), ]
     }
@@ -76,27 +76,27 @@ identify_table_of_contents <- function(pdf, standard, nb.pages, nb.pages.with.co
     if (length(endline) == 0) {rm(endline)}
     if (exists("endline")) { if(endline == "Inf") {rm(endline)} }
     
-  } ## end of if condition
+  }
   
   
   ## remove endline if startline is greater than endline because this would not make sense
   if ( exists("startline") & exists("endline") ) { if (startline > endline) { rm(endline) } }
   
-  ## if endline exists but startline does not exist, give an error message 
+  ## if endline exists but startline does not exist produce an error message 
   if ( !exists("startline") && exists("endline") ) {
     df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, 
                          msg = "Startline for table of contents not identified", error_orig = "")
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)
   }
   
-  ## if startline exists but endline does not exist, give an error message
+  ## if startline exists but endline does not exist produce an error message
   if ( !exists("endline") && exists("startline") ) {
     df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, 
                          msg = "Endline for table of contents not identified", error_orig = "")
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)
   }
   
-  ## if both startline and endline do not exist, give an error message
+  ## if both startline and endline do not exist produce an error message
   if ( !exists("endline") && !exists("startline") ) {
     df.err <- data.frame(timestamp = Sys.time(), standard, nb.pages, nb.pages.with.content, 
                          msg = "Startline and endline for table of contents not identified", error_orig = "")

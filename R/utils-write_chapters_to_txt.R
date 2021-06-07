@@ -12,8 +12,8 @@ write_chapters_to_txt <- function(contents, standard, doc.name, nb.pages, nb.pag
     utils::write.table(df.err, file.path(dirname(path), "log.txt"), sep = ";", append = TRUE, row.names = FALSE, col.names = FALSE)
   }
   
-  ## paste all section_texts of one chapter (with same chapter_no) together
-  ## new data frame with standard, chapter, combined titles, combined text, start line, end line, start page, end page
+  ## paste all section_texts from one chapter (with same chapter_no) together
+  ## new data.frame with standard, chapter, combined titles, combined text, start line, end line, start page, end page
   
   ## get rid of NA
   unique.chapters <- unique.chapters[!is.na(unique.chapters)]

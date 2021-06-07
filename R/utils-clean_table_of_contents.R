@@ -6,7 +6,6 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   contents$text_no_spaces <- gsub("^section", "", contents$text_no_spaces)
   contents$text <- gsub("^chapter","",contents$text)
   contents$text_no_spaces <- gsub("^chapter", "", contents$text_no_spaces)
-  
   contents$text <- gsub(" $|^ ", "", contents$text)
   
   ## remove rows which are actually not part of the toc but are simply a header
@@ -40,7 +39,7 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   contents <- contents[contents$text_no_spaces != "0age", ]
   contents <- contents[contents$text_no_spaces != "contents", ]
   
-  ## sometimes there are page numbers with roman letters in the table of contents. remove those
+  ## sometimes page numbers are indicated by roman letters ... remove those
   pagenumbers.which.need.to.be.removed <- seq(1 : 100)
   pagenumbers.which.need.to.be.removed <- tolower(as.character(utils::as.roman(pagenumbers.which.need.to.be.removed)))
   for (pagenumber in pagenumbers.which.need.to.be.removed) contents <- contents[contents$text_no_spaces != pagenumber, ]
@@ -62,10 +61,10 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   contents$text <- gsub("^\\s+", "", contents$text)
   
   
-  ## identify section_title which is simply the substring before the many dots appear (e.g. ten dots in a row split the title from page number)
-  ## section title is everything before many dots OR before the page number at the end
-  ## arbitrary number of dots, but at least more than one dot followed by optional spaces, 
-  ## followed by number with something between 1 to 4 figures (largest page number is in the thousands) at the end of the string
+  ## identify section_title which is the substring before many dots appear (e.g. ten dots in a row split the title from page number)
+  ## section title is everything before many dots or before the page number at the end
+  ## how to do: arbitrary number of dots, but at least more than one dot followed by optional spaces, 
+  ## followed by a number with something between 1 to 4 figures (largest page number is in the thousands) at the end of the string
   contents$section_title <- sapply(contents$text, function(x) { strsplit(x, split = "\\s*?\\.+\\s*?[0-9]{1,4}$")[[1]][1] })
   
   ## remove all spaces and dots at the end of section titles until there are non left WHY DO THIS LIKE THAT?
@@ -77,14 +76,13 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   contents$section_title_nospace <- sapply(contents$text_no_spaces, 
                                             function(x) { strsplit(x, split = "\\s*?\\.+\\s*?[0-9]{1,4}$")[[1]][1] })
   
-  ## identify section and chapter numbers and write them into new column; always "number dot number ..." format
-  ## for Annexes different format A.1 or A.1.1 ...
-  ## if it starts with a number or with character dot number, then the separator is the first space; put that into a new
-  ## column
-  ## optional space after each number, optional dot after each number; after first number or character either space
+  ## identify section numbers and write them into a new column; format always "number dot number ...", e.g. "3.1.1"
+  ## for Annexes similar format A.1 or A.1.1 ...
+  ## if it starts with a number or with character dot number, then the separator is the first space
+  ## optional: space after each number, optional dot after each number; after first number or character either space
   ## or dot needs to exist
   
-  #### sometimes there are section titles which go over more than one line. this is indicated with the variable morelines
+  #### sometimes section titles go over more than one line which is indicated with the variable morelines
   #### the code for this follows
   
   ## identify rows in the table of contents which do not have a page number at the end
@@ -107,8 +105,8 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   
   contents$section_no[which.morelines] <- stringr::str_extract(contents$text[which.morelines], text.title.splitter)
   
+  ## manual cleaning
   if (sso == "ETSI") contents$section_no <- gsub(" 5g ?$", "", contents$section_no)
-  
   contents$section_no <- gsub(" ", "", contents$section_no)
   contents$section_no <- gsub("\\.$", "", contents$section_no)
   contents$section_no <- gsub("\\)", "", contents$section_no)
@@ -123,8 +121,8 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
     
   }
   
-  ## identify the section titles which go over 2, 3, 4, 5, 6 or 7 lines and store the text into the first line
-  ## the choice of considering seven lines is arbitrary chosen (there may be even longer section titles)
+  ## identify the section titles which may go over 2, 3, 4, 5, 6 or 7 lines and store the text in the first line
+  ## the choice of considering seven lines is arbitrary (there may be even longer section titles)
   for ( i in which(contents$morelines) ) {
     
     for ( j in 6:1) {
@@ -169,7 +167,7 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   
   contents$section_title_nospace <- gsub("\\(|\\)", "", contents$section_title_nospace)
   
-  ## remove rows where page of the section is not identified
+  ## remove rows with page of section not identified
   contents <- contents[!(is.na(contents$page_of_section)), ]
   
   return(contents)

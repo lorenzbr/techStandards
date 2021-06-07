@@ -4,10 +4,10 @@
 #' 
 #' @usage parse_standard_doc(file, path, sso = "", doc.type = "pdf", 
 #'                    overwrite = FALSE, encoding = "UTF-8", print = TRUE)
-#' @param file A string containing the file name of the standard document.
-#' @param path A string containing the path of the parsed standard document.
-#' @param sso A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).
-#' @param doc.type A string containing the document type. Should be \emph{pdf}.
+#' @param file A character string containing the file name of the standard document.
+#' @param path A character string containing the path of the parsed standard document.
+#' @param sso A character string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).
+#' @param doc.type A character string containing the document type. Should be \emph{pdf}.
 #' @param overwrite A logical indicating whether to overwrite existing data.
 #' @param encoding Encoding of the input document. Default is \emph{UTF-8}. The encoding is converted to \emph{UTF-8}.
 #' @param print A logical. If \code{TRUE} messages are printed.
@@ -17,14 +17,14 @@
 #' @export
 parse_standard_doc <- function(file, path, sso = "", doc.type = "pdf", overwrite = FALSE, encoding = "UTF-8", print = TRUE) {
 
-  ## initialize parsing (creates files and folders)
+  ## initialize parsing by creating files and output folders
   if ( !file.exists(file.path(dirname(path), "log.txt")) ) init_standard_doc_parser(path, create.new.files = TRUE)
   
   ## output paths
   path.ch.txt <- paste0(gsub("/$", "", path), "_ch_txt/")
   path.toc <- paste0(gsub("/$", "", path), "_toc/")
   
-  ## create windows path (because without it, R aborts after running for quite a while when parse_standard_docs is used)
+  ## create and use windows path (because otherwise R aborts after running for quite a while when parse_standard_docs is used)
   file <- gsub("/", "\\\\", file)
   
   standard <- basename(file)
@@ -48,10 +48,11 @@ parse_standard_doc <- function(file, path, sso = "", doc.type = "pdf", overwrite
     ## get document name (without file type)
     if (grepl(".pdf$|.csv$|.txt$", standard)) doc.name <- substring(standard, 1, nchar(standard) - 4)
     
-    ## check whether document was already parsed successfully, if yes skip this one
+    ## check whether document was already parsed successfully
     parsed.documents <- data.table::fread(file.path(dirname(path), "parsed_documents.txt"), sep = ";")
     document.parsed <- sum(grepl(standard, parsed.documents$Parsed_documents, fixed = TRUE)) > 0
 
+    
     if ( document.parsed == FALSE || (document.parsed == TRUE && overwrite == TRUE) ) {
     
       ## read standard document into a data.frame
@@ -99,7 +100,7 @@ parse_standard_doc <- function(file, path, sso = "", doc.type = "pdf", overwrite
       ## text without spaces (used to match strings)
       pdf$text_no_spaces <- gsub(" ", "", pdf$text)
       
-      ## some manual cleaning
+      ## some cleaning
       pdf$text_no_spaces[pdf$text_no_spaces == "contentspage"] <- "contents"
       pdf$text_no_spaces <- gsub("\003|\002|\001|\004", "", pdf$text_no_spaces)
       
@@ -176,7 +177,7 @@ parse_standard_doc <- function(file, path, sso = "", doc.type = "pdf", overwrite
       
     } else if (document.parsed) {
       
-      message(standard, " was already parsed!")
+      message(standard, " has already been parsed!")
       
     }
   

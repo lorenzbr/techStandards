@@ -8,13 +8,13 @@ parse_standard_doc(file, path, sso = "", doc.type = "pdf",
                    overwrite = FALSE, encoding = "UTF-8", print = TRUE)
 }
 \arguments{
-\item{file}{A string containing the file name of the standard document.}
+\item{file}{A character string containing the file name of the standard document.}
 
-\item{path}{A string containing the path of the parsed standard document.}
+\item{path}{A character string containing the path of the parsed standard document.}
 
-\item{sso}{A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).}
+\item{sso}{A character string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).}
 
-\item{doc.type}{A string containing the document type. Should be \emph{pdf}.}
+\item{doc.type}{A character string containing the document type. Should be \emph{pdf}.}
 
 \item{overwrite}{A logical indicating whether to overwrite existing data.}
 
