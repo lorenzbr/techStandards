@@ -65,7 +65,7 @@ clean_table_of_contents <- function(contents, text.title.splitter, standard, sso
   ## identify section_title which is simply the substring before the many dots appear (e.g. ten dots in a row split the title from page number)
   ## section title is everything before many dots OR before the page number at the end
   ## arbitrary number of dots, but at least more than one dot followed by optional spaces, 
-  ## followed by number with something between 1 to 4 figures (largest page numebr is in the thousands) at the end of the string
+  ## followed by number with something between 1 to 4 figures (largest page number is in the thousands) at the end of the string
   contents$section_title <- sapply(contents$text, function(x) { strsplit(x, split = "\\s*?\\.+\\s*?[0-9]{1,4}$")[[1]][1] })
   
   ## remove all spaces and dots at the end of section titles until there are non left WHY DO THIS LIKE THAT?

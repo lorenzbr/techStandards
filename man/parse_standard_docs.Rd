@@ -4,7 +4,7 @@
 \alias{parse_standard_docs}
 \title{Parse standard documents}
 \usage{
-parse_standard_docs(path, sso = NULL, doc.type = "pdf", 
+parse_standard_docs(path, sso = "", doc.type = "pdf", 
                     overwrite = FALSE, encoding = "UTF-8", print = TRUE)
 }
 \arguments{

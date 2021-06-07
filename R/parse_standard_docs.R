@@ -2,7 +2,7 @@
 #' 
 #' Parses standard documents and gets the full text for each section. The parsed tables of contents are stored as csv's.
 #' 
-#' @usage parse_standard_docs(path, sso = NULL, doc.type = "pdf", 
+#' @usage parse_standard_docs(path, sso = "", doc.type = "pdf", 
 #'                     overwrite = FALSE, encoding = "UTF-8", print = TRUE)
 #' @param path A string containing the path of the parsed standard document.
 #' @param sso A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).
@@ -14,7 +14,7 @@
 #' @seealso \code{\link{parse_standard_doc}}
 #' 
 #' @export
-parse_standard_docs <- function(path, sso = NULL, doc.type = "pdf", overwrite = FALSE, encoding = "UTF-8", print = TRUE) {
+parse_standard_docs <- function(path, sso = "", doc.type = "pdf", overwrite = FALSE, encoding = "UTF-8", print = TRUE) {
   
   files <- list.files(path, pattern = paste0(".", doc.type, "$"), full.names = TRUE)
   
