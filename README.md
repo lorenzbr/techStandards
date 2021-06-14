@@ -57,15 +57,16 @@ The two following pictures show an excerpt of a standard document. The red boxes
 ![fulltext_example](./inst/figures/fulltext_example.png)
 
 
-## Contact
+## Potential use cases
 
-Please contact <lorenz.brachtendorf@gmx.de> if you want to contribute to this project.
-
-You can also submit bug reports and suggestions via e-mail or <https://github.com/lorenzbr/techStandards/issues> 
+* Standard essentiality/relevance assessments: fine-grained comparisons of patents with specific technical aspects of a standard
+* Track changes of standard documents over time: how does the text change relative to associated declared standard-essential patents?
+* Identify which sections of a technical standard have become void
+* Find technically similar implementations in other technical standards (e.g., from other standard-setting organizations)
 
 
 ## License
 
-This R package is licensed under the GNU General Public License v3.0.
+This R package is licensed under the MIT license.
 
 See [here](https://github.com/lorenzbr/techStandards/blob/master/LICENSE) for further information.
