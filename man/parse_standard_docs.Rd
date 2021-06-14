@@ -4,11 +4,13 @@
 \alias{parse_standard_docs}
 \title{Parse standard documents}
 \usage{
-parse_standard_docs(path, sso = "", doc.type = "pdf", 
+parse_standard_docs(input.path, output.path, sso = "", doc.type = "pdf", 
                     overwrite = FALSE, encoding = "UTF-8", print = TRUE)
 }
 \arguments{
-\item{path}{A string containing the path of the parsed standard document.}
+\item{input.path}{A string containing the path of the standard documents to be parsed.}
+
+\item{output.path}{A string containing the path of the parsed standard documents.}
 
 \item{sso}{A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).}
 
@@ -21,7 +23,7 @@ parse_standard_docs(path, sso = "", doc.type = "pdf",
 \item{print}{A logical. If \code{TRUE} messages are printed.}
 }
 \description{
-Parses standard documents and gets the full text for each section. The parsed tables of contents are stored as csv's.
+Parse standard documents and get the full text for each section. The parsed tables of contents are stored as csv's.
 }
 \seealso{
 \code{\link{parse_standard_doc}}

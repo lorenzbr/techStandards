@@ -1,10 +1,11 @@
 #' Parse standard documents
 #' 
-#' Parses standard documents and gets the full text for each section. The parsed tables of contents are stored as csv's.
+#' Parse standard documents and get the full text for each section. The parsed tables of contents are stored as csv's.
 #' 
-#' @usage parse_standard_docs(path, sso = "", doc.type = "pdf", 
+#' @usage parse_standard_docs(input.path, output.path, sso = "", doc.type = "pdf", 
 #'                     overwrite = FALSE, encoding = "UTF-8", print = TRUE)
-#' @param path A string containing the path of the parsed standard document.
+#' @param input.path A string containing the path of the standard documents to be parsed.
+#' @param output.path A string containing the path of the parsed standard documents.
 #' @param sso A string containing the acronym of a standard-setting organization (\emph{IEEE}, \emph{ETSI} or \emph{ITU-T}).
 #' @param doc.type A string containing the document type. Should be \emph{pdf}.
 #' @param overwrite A logical indicating whether to overwrite existing data.
@@ -14,11 +15,11 @@
 #' @seealso \code{\link{parse_standard_doc}}
 #' 
 #' @export
-parse_standard_docs <- function(path, sso = "", doc.type = "pdf", overwrite = FALSE, encoding = "UTF-8", print = TRUE) {
+parse_standard_docs <- function(input.path, output.path, sso = "", doc.type = "pdf", overwrite = FALSE, encoding = "UTF-8", print = TRUE) {
   
-  files <- list.files(path, pattern = paste0(".", doc.type, "$"), full.names = TRUE)
+  files <- list.files(input.path, pattern = paste0(".", doc.type, "$"), full.names = TRUE)
   
-  mapply(parse_standard_doc, files, MoreArgs = list(path, sso, doc.type, overwrite, encoding, print))
+  mapply(parse_standard_doc, files, MoreArgs = list(output.path, sso, doc.type, overwrite, encoding, print))
   
   if (print) return(message("Parsing completed!"))
   
